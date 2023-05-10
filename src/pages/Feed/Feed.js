@@ -59,7 +59,14 @@ class Feed extends Component {
       })
       .then(resData => {
         this.setState({
-          posts: resData.posts,
+          posts: resData.posts.map(post => {
+            return {
+              ...post,
+              imageUrl: post.image
+              // fetching value as used in post model and later retrieve
+              // it via imageUrl into postForm in feedEdit.js
+            }
+          }),
           totalPosts: resData.totalItems,
           postsLoading: false
         });
@@ -105,26 +112,26 @@ class Feed extends Component {
     this.setState({
       editLoading: true
     });
-    // Set up data (with image!)
+    const data = new FormData()
+    data.append('title', postData.title)
+    data.append('content', postData.content)
+    data.append('image', postData.image)
+    // 1st arg is field name, 2nd is actual data
+    // field names are those in FeedEdit.js => checkout form label names
+
     let url = 'http://localhost:8080/posts';
     let meth = 'POST';
     if (this.state.editPost) {
-      url = 'URL';
+      url = 'http://localhost:8080/posts/' + this.state.editPost._id;
+      meth = 'PUT';
     }
-
     fetch(url, {
       method: meth,
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        title: postData.title,
-        content: postData.content
-      })
+      body: data
     })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
-          throw new Error('Creating or editing a post failed!');
+          throw new Error('Oops, this post creation failed!');
         }
         return res.json();
       })

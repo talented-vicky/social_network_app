@@ -16,9 +16,9 @@ class SinglePost extends Component {
     const postId = this.props.match.params.postId;
     fetch('http://localhost:8080/post/' + postId)
       .then(res => {
-        // if (res.status !== 200) {
-        //   throw new Error('Failed to fetch status');
-        // }
+        if (res.status !== 200) {
+          throw new Error('Failed to fetch status');
+        }
         return res.json();
       })
       .then(resData => {

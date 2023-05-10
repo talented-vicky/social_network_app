@@ -50,7 +50,9 @@ class FeedEdit extends Component {
         },
         image: {
           ...prevState.postForm.image,
-          value: this.props.selectedPost.imagePath,
+          value: this.props.selectedPost.imageUrl,
+          // the value above is fetched from loadPosts function (Feed.js)  
+          // gotten from db model
           valid: true
         },
         content: {
@@ -163,6 +165,7 @@ class FeedEdit extends Component {
               onBlur={this.inputBlurHandler.bind(this, 'image')}
               valid={this.state.postForm['image'].valid}
               touched={this.state.postForm['image'].touched}
+              value={this.state.postForm['image'].value}
             />
             <div className="new-post__preview-image">
               {!this.state.imagePreview && <p>Please choose an image.</p>}
