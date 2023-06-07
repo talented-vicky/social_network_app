@@ -51,8 +51,8 @@ class FeedEdit extends Component {
         image: {
           ...prevState.postForm.image,
           value: this.props.selectedPost.imageUrl,
-          // the value above is fetched from loadPosts function (Feed.js)  
-          // gotten from db model
+          // the value above is fetched from loadPosts function (Feed.js and  
+          // this is gotten from db model)
           valid: true
         },
         content: {

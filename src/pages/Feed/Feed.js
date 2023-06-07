@@ -50,7 +50,7 @@ class Feed extends Component {
       page--;
       this.setState({ postPage: page });
     }
-    fetch('http://localhost:8080/posts')
+    fetch('http://localhost:8080/posts?page=' + page)
       .then(res => {
         if (res.status !== 200) {
           throw new Error('Failed to fetch posts.');
@@ -116,8 +116,8 @@ class Feed extends Component {
     data.append('title', postData.title)
     data.append('content', postData.content)
     data.append('image', postData.image)
-    // 1st arg is field name, 2nd is actual data
-    // field names are those in FeedEdit.js => checkout form label names
+    // 1st arg is field name, 2nd is actual data.
+    // Field names are those in FeedEdit.js => checkout form label names
 
     let url = 'http://localhost:8080/posts';
     let meth = 'POST';
@@ -179,7 +179,9 @@ class Feed extends Component {
 
   deletePostHandler = postId => {
     this.setState({ postsLoading: true });
-    fetch('URL')
+    fetch('http://localhost:8080/posts/' + postId, {
+      method: 'DELETE'
+    })
       .then(res => {
         if (res.status !== 200 && res.status !== 201) {
           throw new Error('Deleting a post failed!');
@@ -260,7 +262,7 @@ class Feed extends Component {
                   author={post.creator.name}
                   date={new Date(post.createdAt).toLocaleDateString('en-US')}
                   title={post.title}
-                  image={post.imageUrl}
+                  image={post.image}
                   content={post.content}
                   onStartEdit={this.startEditPostHandler.bind(this, post._id)}
                   onDelete={this.deletePostHandler.bind(this, post._id)}
